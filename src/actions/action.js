@@ -1,39 +1,48 @@
-export const UPDATE_QUERY = 'UPDATE_QUERY'
-export const UPDATE_LIST = 'UPDATE_LIST'
+export const QUERY_USERS = 'QUERY_USERS'
+export const REQUEST_USERS = 'REQUEST_USERS'
+export const RECEIVE_USERS = 'RECEIVE_USERS'
+export const CLEAR_USERS = 'CLEAR_USERS'
 
-export function fetchUsers(query, dispatch) {
-    fetch('https://api.github.com/search/users?q=' + query)
-        .then((response) => { return response.json() })
-        .then((json) => {
-            console.log(json.items)
-            dispatch({ type: UPDATE_LIST, users: json.items })
-        })
+
+export function queryUsers(query) {
+    return {
+        type: QUERY_USERS,
+        query
+    }
 }
 
-// export function fetchPosts(subreddit) {
-//     return dispatch => {
-//         dispatch(requestPosts(subreddit))
-//         return fetch(`https://www.reddit.com/r/${subreddit}.json`)
-//             .then(response => response.json())
-//             .then(json => dispatch(receivePosts(subreddit, json)))
-//     }
-// }
+function requestUsers(input) {
+    return {
+        type: REQUEST_USERS,
+        input
+    }
+}
 
-// function shouldFetchPosts(state, subreddit) {
-//     const posts = state.postsBySubreddit[subreddit]
-//     if (!posts) {
-//         return true
-//     } else if (posts.isFetching) {
-//         return false
-//     } else {
-//         return posts.didInvalidate
-//     }
-// }
+function receiveUsers(input, json) {
+    return {
+        type: RECEIVE_USERS,
+        input,
+        users: json.items,
+        totalCount: json.total_count
+    }
+}
 
-// export function fetchPostsIfNeeded(subreddit) {
-//     return (dispatch, getState) => {
-//         if (shouldFetchPosts(getState(), subreddit)) {
-//             return dispatch(fetchPosts(subreddit))
-//         }
-//     }
-// }
+export function fetchUsers(input, page = 1) {
+    return ((dispatch) => {
+        dispatch(requestUsers(input))
+        return fetchPage(dispatch, input, page)
+    })
+}
+
+export function fetchPage(dispatch, input, page) {
+    return (fetch('https://api.github.com/search/users?q=' + input + '&page=' + page)
+        .then((response) => { return response.json() })
+        .then((json) => { dispatch(receiveUsers(input, json)) })
+    )
+}
+
+export function clearUsers() {
+    return {
+        type: CLEAR_USERS
+    }
+}

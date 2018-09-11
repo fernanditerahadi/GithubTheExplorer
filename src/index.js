@@ -1,16 +1,17 @@
 import 'babel-polyfill'
+
 import React from 'react'
 import { render } from 'react-dom'
-import App from './containers/App'
-import registerServiceWorker from './registerServiceWorker'
-
-import 'bootstrap/dist/css/bootstrap.css';
-
-import reducer from './reducers/reducer'
-import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 
-const store = createStore(reducer)
+import App from './containers/App'
+import configureStore from './store/configureStore'
+import registerServiceWorker from './registerServiceWorker'
+
+import 'antd/dist/antd.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
+const store = configureStore()
 
 render(
     <Provider store={store}>
