@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux'
 
 import _ from 'lodash'
@@ -15,19 +16,17 @@ import Overlay from './components/Overlay'
 import { queryUsers, fetchUsers, fetchPage, clearUsers } from './../actions/action'
 
 class App extends Component {
-    state = {
-        currentPage: 1
-    }
-
+    state = { currentPage: 1, searchText: '' }
     onTextChange = _.debounce(this.props.dispatch, 500)
 
     onClear = () => {
         const { dispatch } = this.props
         dispatch(clearUsers())
-        this.setState({ currentPage: 1 })
+        this.setState({ currentPage: 1, searchText: '' })
     }
 
     onHandleChange = (e) => {
+        this.setState({ searchText: e.target.value })
         this.onTextChange(queryUsers(e.target.value))
     }
 
@@ -38,12 +37,10 @@ class App extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.query !== prevProps.query) {
+        if (this.props.query !== prevProps.query && this.props.query !== '') {
             const { dispatch, query } = this.props
-            if (query !== '') {
-                dispatch(fetchUsers(query))
-                this.setState({ currentPage: 1 })
-            }
+            this.setState({ currentPage: 1 })
+            dispatch(fetchUsers(query))
         }
     }
 
@@ -69,13 +66,14 @@ class App extends Component {
                     <Search
                         onChange={(e => this.onHandleChange(e))}
                         onClick={() => this.onClear()}
+                        value={this.state.searchText}
                         buttonName="Clear" />
                     <hr />
                     <div className="Users-container">
-                        <Overlay 
-                        isFetching={this.props.isFetching}
-                        query={this.props.query}
-                        array={this.props.users} />
+                        <Overlay
+                            isFetching={this.props.isFetching}
+                            query={this.props.query}
+                            array={this.props.users} />
                         {users}
                     </div>
                     <hr />
