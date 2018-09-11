@@ -6,10 +6,12 @@ import ic_blank from './../../assets/ic_blank.png'
 
 import './Overlay.css'
 
+
 class Overlay extends Component {
     render() {
         const NO_RESULTS_FOUND = 'No Results Found...'
         const BEGIN_SEARCH = 'Begin Search...'
+
         return (
             <div>
                 {this.props.isFetching ?

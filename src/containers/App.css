@@ -9,13 +9,14 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
-  padding: 20px;
+  height: 24vh;
+  padding: 4%;
   color: white;
+  position: relative;
 }
 
 .App-input {
-  padding: 2% 16% 2% 16%;
+  padding: 1% 16% 1% 16%;
 }
 
 .App-title {
@@ -27,7 +28,7 @@
 }
 
 .Users-container {
-  height: 55vh;
+  height: 53vh;
   overflow-y: auto;
   position: relative
 }
@@ -59,6 +60,7 @@
 }
 
 /* Spinner */
+
 .spinner {
   margin: 100px auto 0;
   width: 70px;

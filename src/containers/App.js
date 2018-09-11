@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux'
 
 import _ from 'lodash'
@@ -7,10 +6,10 @@ import _ from 'lodash'
 import './App.css'
 import logo from './../assets/logo.svg'
 
-import { Pagination } from 'antd';
-
+import { Pagination, Menu, Icon } from 'antd';
 
 import User from './components/User'
+import Navigation from './components/Navigation'
 import Search from './components/Search'
 import Overlay from './components/Overlay'
 import { queryUsers, fetchUsers, fetchPage, clearUsers } from './../actions/action'
@@ -26,8 +25,8 @@ class App extends Component {
     }
 
     onHandleChange = (e) => {
-        this.setState({ searchText: e.target.value })
         this.onTextChange(queryUsers(e.target.value))
+        this.setState({ searchText: e.target.value })
     }
 
     onPageChange = (page) => {
@@ -37,10 +36,15 @@ class App extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.query !== prevProps.query && this.props.query !== '') {
+        if (this.props.query !== prevProps.query) {
             const { dispatch, query } = this.props
-            this.setState({ currentPage: 1 })
-            dispatch(fetchUsers(query))
+            if (this.props.query == '') {
+                this.onClear()
+            } else {
+                this.setState({ currentPage: 1 })
+                dispatch(fetchUsers(query))
+            }
+
         }
     }
 
@@ -58,7 +62,9 @@ class App extends Component {
 
         return (
             <div className="App">
+
                 <header className="App-header">
+                    <Navigation />
                     <img src={logo} className="App-logo" alt="github-explorer" />
                     <h1 className="App-title">Github Explorer</h1>
                 </header>
@@ -70,11 +76,12 @@ class App extends Component {
                         buttonName="Clear" />
                     <hr />
                     <div className="Users-container">
+                        {users}
                         <Overlay
                             isFetching={this.props.isFetching}
                             query={this.props.query}
                             array={this.props.users} />
-                        {users}
+
                     </div>
                     <hr />
                     <Pagination
