@@ -1,0 +1,27 @@
+.Card {
+    margin: 0 auto;
+}
+
+.Card-image {
+    max-width: 100%;
+    max-height: auto;
+    object-position: center;
+}
+
+.Card-name {
+    margin: 0%;
+    font-size: 2em;
+    max-width: 100%;
+    display: block;
+    text-overflow: ellipsis;
+}
+
+.Card-id {
+    color: #222222;
+    margin: 0%;
+    font-size: 1.5em;
+    font-weight: lighter;
+    max-width: 100%;
+    display: block;
+    text-overflow: ellipsis;
+}

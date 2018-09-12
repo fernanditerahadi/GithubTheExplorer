@@ -20,7 +20,7 @@ render(
         <BrowserRouter>
             <Switch>
                 <Route exact path='/' component={App} />
-                <Route exact path='/user/:name' component={Profile} />
+                <Route exact path='/:name' component={Profile} />
             </Switch>
         </BrowserRouter>
     </Provider>,

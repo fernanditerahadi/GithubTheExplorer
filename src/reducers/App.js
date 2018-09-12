@@ -4,7 +4,7 @@ import {
     REQUEST_USERS,
     RECEIVE_USERS,
     CLEAR_USERS
-} from './../actions/action'
+} from '../actions/App'
 
 
 const initialQueryState = {
@@ -43,9 +43,10 @@ const users = (state = initialUsersState, action) => {
     }
 }
 
-const rootReducer = combineReducers({
+
+const appReducer = combineReducers({
     query,
     users
 })
 
-export default rootReducer
+export default appReducer

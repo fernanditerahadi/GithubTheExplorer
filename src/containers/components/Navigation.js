@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 
-import { Navbar, NavbarToggler, NavbarBrand } from 'reactstrap';
+import { Navbar } from 'reactstrap';
 import { Button, Icon } from 'antd'
 
 class Navigation extends Component {
@@ -8,11 +9,12 @@ class Navigation extends Component {
         return (
             <div>
                 <Navbar color="dark" light>
-                    <NavbarBrand href="/" className="mr-auto">
-                        <Button type="primary">
-                            <Icon type="home" />
+                    <Link to={'/'}>
+                        <Button ghost type="secondary">
+                            <Icon type="left" />
                         </Button>
-                    </NavbarBrand>
+                    </Link>
+
                 </Navbar>
             </div>
         );

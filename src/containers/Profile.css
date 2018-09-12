@@ -1,0 +1,15 @@
+.Profile-container {
+    margin: 0% 0% 2% 0%;
+    padding: 2% 0% 2% 0%;
+    height: 88vh;
+    overflow: auto;
+}
+
+
+.Profile-info {
+    border: 1px solid black;
+}
+
+.test {
+    border: 1px solid black;
+}

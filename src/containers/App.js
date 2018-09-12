@@ -11,7 +11,7 @@ import { Pagination } from 'antd';
 import User from './components/User'
 import Search from './components/Search'
 import Overlay from './components/Overlay'
-import { queryUsers, fetchUsers, fetchPage, clearUsers } from './../actions/action'
+import { queryUsers, fetchUsers, fetchPage, clearUsers } from '../actions/App'
 
 class App extends Component {
     state = { currentPage: 1, searchText: '' }
@@ -33,12 +33,11 @@ class App extends Component {
         dispatch(fetchPage(input, page))
         this.setState({ currentPage: page })
     }
-
     componentDidUpdate(prevProps) {
         if (this.props.query !== prevProps.query) {
             const { dispatch, query } = this.props
             if (this.props.query == '') {
-                this.onClear()
+
             } else {
                 this.setState({ currentPage: 1 })
                 dispatch(fetchUsers(query))
@@ -60,7 +59,6 @@ class App extends Component {
 
         return (
             <div className="App">
-
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="github-explorer" />
                     <h1 className="App-title">Github Explorer</h1>

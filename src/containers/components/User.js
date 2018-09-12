@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Link} from 'react-router-dom'
 
 
 import { Media } from 'reactstrap';
@@ -11,17 +12,19 @@ class User extends Component {
 
         return (
             <div>
-                <Media className="User">
-                    <Media left>
-                        <img className="User-image" src={img} alt="github-explorer"></img>
-                    </Media>
-                    <Media body className="User-name-container">
-                        <Media heading className="User-name">
-                            {this.props.user.login}
+                <Link to={`/${this.props.user.login}`}>
+                    <Media className="User">
+                        <Media left>
+                            <img className="User-image" src={img} alt="github-explorer"></img>
                         </Media>
-                        {url}
+                        <Media body className="User-name-container">
+                            <Media heading className="User-name">
+                                {this.props.user.login}
+                            </Media>
+                            {url}
+                        </Media>
                     </Media>
-                </Media>
+                </Link>
                 <hr></hr>
             </div>
 
