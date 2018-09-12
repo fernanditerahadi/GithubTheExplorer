@@ -3,7 +3,7 @@
 }
 
 .Card-image {
-    max-width: 100%;
+    width: 100%;
     max-height: auto;
     object-position: center;
 }
@@ -24,4 +24,24 @@
     max-width: 100%;
     display: block;
     text-overflow: ellipsis;
+}
+
+.Card-bio {
+    color: #333333;
+    margin: 4% 0% 2% 0%;
+    text-align: justify;
+    font-size: 1em;
+    font-weight: lighter;
+}
+
+.Card-detail-container {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.Card-detail {
+    font-size: 0.9em;
+    margin: 0%;
+    display: block;
+    color: #444444;
 }

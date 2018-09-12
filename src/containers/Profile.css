@@ -1,15 +1,12 @@
+.Profile {
+    margin: 0% auto 0% auto !important;
+
+}
+
 .Profile-container {
-    margin: 0% 0% 2% 0%;
-    padding: 2% 0% 2% 0%;
-    height: 88vh;
-    overflow: auto;
+    margin: 0% auto 0% auto !important;
+    padding: 2% 0% 0% 0% !important;
+    height: 92vh !important;
+    max-width: 90% !important;
 }
 
-
-.Profile-info {
-    border: 1px solid black;
-}
-
-.test {
-    border: 1px solid black;
-}

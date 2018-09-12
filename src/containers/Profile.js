@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Navigation from './components/Navigation'
+import List from './components/List'
 import Card from './components/Card'
 
 import { Row, Col, Grid } from 'react-bootstrap';
@@ -19,8 +20,7 @@ class Profile extends Component {
                             <Card />
                         </Col>
                         <Col sm={12} md={3}>
-                            <h4>Repos</h4>
-                            <hr></hr>
+                            <List />
                         </Col>
                         <Col sm={12} md={3}>
                             <h4>Followers</h4>
