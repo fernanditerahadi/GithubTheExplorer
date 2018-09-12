@@ -11,35 +11,35 @@ import { Pagination } from 'antd';
 import User from './components/User'
 import Search from './components/Search'
 import Overlay from './components/Overlay'
-import { queryUsers, fetchUsers, fetchPage, clearUsers } from '../actions/App'
+import { queryUsers, fetchUsers, clearUsers, storeState } from '../actions/App'
 
 class App extends Component {
-    state = { currentPage: 1, searchText: '' }
     onTextChange = _.debounce(this.props.dispatch, 500)
 
     onClear = () => {
         const { dispatch } = this.props
         dispatch(clearUsers())
-        this.setState({ currentPage: 1, searchText: '' })
+        dispatch(storeState('', 1))
     }
 
     onHandleChange = (e) => {
+        const { dispatch } = this.props
         this.onTextChange(queryUsers(e.target.value))
-        this.setState({ searchText: e.target.value })
+        dispatch(storeState(e.target.value, 1))
     }
 
     onPageChange = (page) => {
         const { dispatch, input } = this.props
-        dispatch(fetchPage(input, page))
-        this.setState({ currentPage: page })
+        dispatch(fetchUsers(input, page))
+        dispatch(storeState(input, page))
     }
     componentDidUpdate(prevProps) {
         if (this.props.query !== prevProps.query) {
             const { dispatch, query } = this.props
             if (this.props.query == '') {
-
+                this.onClear()
             } else {
-                this.setState({ currentPage: 1 })
+                dispatch(storeState(query, 1))
                 dispatch(fetchUsers(query))
             }
         }
@@ -67,7 +67,7 @@ class App extends Component {
                     <Search
                         onChange={(e => this.onHandleChange(e))}
                         onClick={() => this.onClear()}
-                        value={this.state.searchText}
+                        value={this.props.searchText} //HERE
                         buttonName="Clear" />
                     <hr />
                     <div className="Users-container">
@@ -82,7 +82,7 @@ class App extends Component {
                     <Pagination
                         total={pages ? pages : 1}
                         pageSize={perPage}
-                        current={this.state.currentPage}
+                        current={this.props.currentPage} // HERE
                         onChange={(page) => this.onPageChange(page)}
                         showTotal={(total, range) => pages ? `${range[0]}-${range[1]} of ${total} items` : `0 items`}
                     />
@@ -98,7 +98,9 @@ const mapStateToProps = (state) => {
         input: state.users.input,
         users: state.users.users,
         totalCount: state.users.totalCount,
-        isFetching: state.users.isFetching
+        isFetching: state.users.isFetching,
+        currentPage: state.store.currentPage,
+        searchText: state.store.searchText
     }
 }
 

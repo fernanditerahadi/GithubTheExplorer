@@ -3,7 +3,8 @@ import {
     QUERY_USERS,
     REQUEST_USERS,
     RECEIVE_USERS,
-    CLEAR_USERS
+    CLEAR_USERS,
+    STORE_STATE
 } from '../actions/App'
 
 
@@ -43,10 +44,25 @@ const users = (state = initialUsersState, action) => {
     }
 }
 
+const initialStoreState = {
+    currentPage: 1,
+    searchText: ''
+}
+
+const store = (state = initialStoreState, action) => {
+    switch (action.type) {
+        case STORE_STATE:
+            return { ...state, currentPage: action.currentPage, searchText: action.searchText }
+        default:
+            return state
+    }
+}
+
 
 const appReducer = combineReducers({
     query,
-    users
+    users,
+    store
 })
 
 export default appReducer
