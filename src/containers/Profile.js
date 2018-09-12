@@ -1,16 +1,30 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+
+import _ from 'lodash'
 
 import Navigation from './components/Navigation'
 import List from './components/List'
 import Card from './components/Card'
 
-import { Row, Col, Grid } from 'react-bootstrap';
+import { Row, Col, Grid } from 'react-bootstrap'
 
 import './Profile.css'
 
 
 class Profile extends Component {
     render() {
+
+        let repos = _.range(1).map((user, index) => {
+            return (<p>repo</p>)
+        });
+
+        let followers = _.range(10).map((user, index) => {
+            return (<p>follower</p>)
+        });
+
+        let following = _.range(100).map((user, index) => {
+            return (<p>following</p>)
+        });
         return (
             <div className="Profile">
                 <Navigation />
@@ -20,15 +34,13 @@ class Profile extends Component {
                             <Card />
                         </Col>
                         <Col sm={12} md={3}>
-                            <List />
+                            <List title="Repos" repo={repos} />
                         </Col>
                         <Col sm={12} md={3}>
-                            <h4>Followers</h4>
-                            <hr></hr>
+                            <List title="Followers" repo={followers} />
                         </Col>
                         <Col sm={12} md={3}>
-                            <h4>Following</h4>
-                            <hr></hr>
+                            <List title="Following" repo={following} />
                         </Col>
                     </Row>
                 </Grid>

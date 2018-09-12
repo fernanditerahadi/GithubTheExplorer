@@ -1,5 +1,8 @@
 .Card {
-    margin: 0 auto;
+    max-height: 88vh;
+    overflow-y: auto;
+    display: block;
+    margin: 0% 0% 4% 0%;
 }
 
 .Card-image {

@@ -1,0 +1,17 @@
+.List {
+    max-height: 88vh;
+    margin: 0% 0% 4% 0%;
+    display: block;
+}
+
+.List-item-container {
+    max-height: 72vh;
+    overflow-y: auto;
+    display: block;
+}
+
+.List-pagination {
+    text-align: center;
+    display: block;
+    width: 100%;
+}
