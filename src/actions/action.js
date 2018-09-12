@@ -30,17 +30,19 @@ function receiveUsers(input, json) {
 }
 
 export function fetchUsers(input, page = 1) {
-    return ((dispatch) => {
+    return (dispatch) => {
         dispatch(requestUsers(input))
-        return fetchPage(dispatch, input, page)
-    })
+        return dispatch(fetchPage(input, page))
+    }
 }
 
-export function fetchPage(dispatch, input, page) {
-    return (fetch(API_URL + input + QUERY_PAGE + page)
-        .then((response) => { return response.json() })
-        .then((json) => { dispatch(receiveUsers(input, json)) })
-    )
+export function fetchPage(input, page) {
+    return dispatch => {
+        return fetch(API_URL + input + QUERY_PAGE + page)
+            .then((response) => { return response.json() })
+            .then((json) => dispatch(receiveUsers(input, json)))
+
+    }
 }
 
 export function clearUsers() {

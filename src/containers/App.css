@@ -9,8 +9,8 @@
 
 .App-header {
   background-color: #222;
-  height: 24vh;
-  padding: 4%;
+  height: 22vh;
+  padding: 2%;
   color: white;
   position: relative;
 }
@@ -28,7 +28,7 @@
 }
 
 .Users-container {
-  height: 53vh;
+  height: 55vh;
   overflow-y: auto;
   position: relative
 }

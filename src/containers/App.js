@@ -6,10 +6,9 @@ import _ from 'lodash'
 import './App.css'
 import logo from './../assets/logo.svg'
 
-import { Pagination, Menu, Icon } from 'antd';
+import { Pagination } from 'antd';
 
 import User from './components/User'
-import Navigation from './components/Navigation'
 import Search from './components/Search'
 import Overlay from './components/Overlay'
 import { queryUsers, fetchUsers, fetchPage, clearUsers } from './../actions/action'
@@ -31,7 +30,7 @@ class App extends Component {
 
     onPageChange = (page) => {
         const { dispatch, input } = this.props
-        fetchPage(dispatch, input, page)
+        dispatch(fetchPage(input, page))
         this.setState({ currentPage: page })
     }
 
@@ -44,7 +43,6 @@ class App extends Component {
                 this.setState({ currentPage: 1 })
                 dispatch(fetchUsers(query))
             }
-
         }
     }
 
@@ -64,7 +62,6 @@ class App extends Component {
             <div className="App">
 
                 <header className="App-header">
-                    <Navigation />
                     <img src={logo} className="App-logo" alt="github-explorer" />
                     <h1 className="App-title">Github Explorer</h1>
                 </header>

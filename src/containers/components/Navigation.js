@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 
-import { Menu, Icon } from 'antd';
+import { Navbar, NavbarToggler, NavbarBrand } from 'reactstrap';
+import { Button, Icon } from 'antd'
 
-import './Navigation.css'
-
-class Search extends Component {
+class Navigation extends Component {
     render() {
         return (
             <div>
-                <Menu
-                    className="Navigation"
-                    theme="dark"
-                    mode="inline">
-                    <Menu.Item key="mail">
-                        <Icon type="home" />Home</Menu.Item>
-                </Menu>
-            </div >
-        )
+                <Navbar color="dark" light>
+                    <NavbarBrand href="/" className="mr-auto">
+                        <Button type="primary">
+                            <Icon type="home" />
+                        </Button>
+                    </NavbarBrand>
+                </Navbar>
+            </div>
+        );
     }
 }
 
-export default Search
+export default Navigation
