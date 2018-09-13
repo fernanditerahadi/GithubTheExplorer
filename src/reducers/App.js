@@ -4,7 +4,8 @@ import {
     REQUEST_USERS,
     RECEIVE_USERS,
     CLEAR_USERS,
-    STORE_STATE
+    STORE_STATE,
+    STORE_SCROLL
 } from '../actions/App'
 
 
@@ -23,9 +24,7 @@ const query = (state = initialQueryState, action) => {
     }
 }
 
-
 const initialUsersState = {
-    input: '',
     users: [],
     totalCount: 0,
     isFetching: false
@@ -34,11 +33,11 @@ const initialUsersState = {
 const users = (state = initialUsersState, action) => {
     switch (action.type) {
         case REQUEST_USERS:
-            return { ...state, input: action.input, isFetching: true }
+            return { ...state, isFetching: true }
         case RECEIVE_USERS:
             return { ...state, users: action.users, totalCount: action.totalCount, isFetching: false }
         case CLEAR_USERS:
-            return { ...state, input: '', users: [], totalCount: 0 }
+            return { ...state, users: [], totalCount: 0 }
         default:
             return state
     }
@@ -46,18 +45,20 @@ const users = (state = initialUsersState, action) => {
 
 const initialStoreState = {
     currentPage: 1,
-    searchText: ''
+    searchText: '',
+    scrollPosition: 0
 }
 
 const store = (state = initialStoreState, action) => {
     switch (action.type) {
         case STORE_STATE:
             return { ...state, currentPage: action.currentPage, searchText: action.searchText }
+        case STORE_SCROLL:
+            return { ...state, scrollPosition: action.scrollPosition }
         default:
             return state
     }
 }
-
 
 const appReducer = combineReducers({
     query,

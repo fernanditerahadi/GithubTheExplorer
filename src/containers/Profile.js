@@ -1,20 +1,28 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import _ from 'lodash'
+
+import './Profile.css'
+
+import { Row, Col, Grid } from 'react-bootstrap'
 
 import Navigation from './components/Navigation'
 import List from './components/List'
 import Card from './components/Card'
-
-import { Row, Col, Grid } from 'react-bootstrap'
-
-import './Profile.css'
-
+import { fetchProfile } from '../actions/Profile'
 
 class Profile extends Component {
+
+    componentDidMount() {
+        const query = this.props.location.pathname.replace(/\//g, "")
+        const { dispatch } = this.props
+        dispatch(fetchProfile(query))
+    }
+
     render() {
 
-        let repos = _.range(1).map((user, index) => {
+        let repos = _.range(10).map((user, index) => {
             return (<p>repo</p>)
         });
 
@@ -22,7 +30,7 @@ class Profile extends Component {
             return (<p>follower</p>)
         });
 
-        let following = _.range(100).map((user, index) => {
+        let following = _.range(10).map((user, index) => {
             return (<p>following</p>)
         });
         return (
@@ -31,16 +39,16 @@ class Profile extends Component {
                 <Grid className="Profile-container">
                     <Row>
                         <Col sm={12} md={3}>
-                            <Card />
+                            <Card {...this.props.profile} />
                         </Col>
                         <Col sm={12} md={3}>
-                            <List title="Repos" repo={repos} />
+                            <List title="Repos" count={this.props.profile.public_repos} item={repos} />
                         </Col>
                         <Col sm={12} md={3}>
-                            <List title="Followers" repo={followers} />
+                            <List title="Followers" count={this.props.profile.followers} item={followers} />
                         </Col>
                         <Col sm={12} md={3}>
-                            <List title="Following" repo={following} />
+                            <List title="Following" count={this.props.profile.following} item={following} />
                         </Col>
                     </Row>
                 </Grid>
@@ -50,4 +58,11 @@ class Profile extends Component {
     }
 }
 
-export default Profile
+const mapStateToProps = (state) => {
+    return {
+        isFetching: state.profileReducer.isFetching,
+        profile: state.profileReducer.profile
+    }
+}
+
+export default connect(mapStateToProps)(Profile)

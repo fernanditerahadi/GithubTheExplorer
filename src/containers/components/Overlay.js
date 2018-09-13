@@ -6,12 +6,30 @@ import ic_blank from './../../assets/ic_blank.png'
 
 import './Overlay.css'
 
+const NO_RESULTS_FOUND = 'No Results Found...'
+const BEGIN_SEARCH = 'Begin Search...'
 
 class Overlay extends Component {
-    render() {
-        const NO_RESULTS_FOUND = 'No Results Found...'
-        const BEGIN_SEARCH = 'Begin Search...'
+    getOverlayBackground = () => {
+        const { query, array } = this.props
+        if (query) {
+            return array.length >= 1 ? {
+                icon: ic_blank,
+                text: null
+            } : {
+                    icon: ic_not_found,
+                    text: NO_RESULTS_FOUND
+                }
+        } else {
+            return {
+                icon: ic_empty_state,
+                text: BEGIN_SEARCH
+            }
+        }
+    }
 
+    render() {
+        const overLayBackground = this.getOverlayBackground()
         return (
             <div>
                 {this.props.isFetching ?
@@ -23,11 +41,11 @@ class Overlay extends Component {
                     :
                     <div className="empty-state">
                         <img className="empty-state-image"
-                            src={this.props.query === '' ? ic_empty_state : this.props.array.length < 1 ? ic_not_found : ic_blank}
+                            src={overLayBackground.icon}
                             alt="github-explorer" />
 
                         <h4 className="empty-state-text">
-                            {this.props.query === '' ? BEGIN_SEARCH : this.props.array.length < 1 ? NO_RESULTS_FOUND : ""}
+                            {overLayBackground.text}
                         </h4>
                     </div>}
             </div>
