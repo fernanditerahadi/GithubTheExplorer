@@ -17,37 +17,38 @@ class App extends Component {
 
     onClear = () => {
         this.props.clearUsers()
-        this.props.storeState('', 1)
+        this.props.storeState(null, 1, 0)
     }
 
     onHandleChange = (e) => {
         this.props.onTextChange(queryUsers((e.target.value)))
-        this.props.storeState(e.target.value, 1)
-        this.props.storeScroll(document.getElementById('Users-container').scrollTo(0, 0))
+        this.props.storeState(e.target.value, 1, document.getElementById('Users-container').scrollTo(0, 0))
     }
 
     onPageChange = (page) => {
         this.props.fetchUsers(this.props.query, page)
-        this.props.storeState(this.props.query, page)
+        this.props.storeState(this.props.searchText, page, document.getElementById('Users-container').scrollTo(0, 0))
     }
 
     componentDidMount() {
-        this.props.storeScroll(document.getElementById('Users-container').scrollTo(0, this.props.scrollPosition))
+        this.props.storeState(this.props.searchText, this.props.currentPage,
+            document.getElementById('Users-container').scrollTo(0, this.props.scrollPosition))
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.query !== prevProps.query) {
-            if (this.props.query == '') {
+            if (this.props.query == null) {
                 this.onClear()
             } else {
-                this.props.storeState(this.props.query, 1)
+                this.props.storeState(this.props.query, 1, 0)
                 this.props.fetchUsers(this.props.query)
             }
         }
     }
 
     componentWillUnmount() {
-        this.props.storeScroll(document.getElementById('Users-container').scrollTop)
+        this.props.storeState(this.props.searchText, this.props.currentPage,
+            document.getElementById('Users-container').scrollTop)
     }
 
 
@@ -113,9 +114,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         clearUsers: () => dispatch(clearUsers()),
-        storeState: (searchText, currentPage) => dispatch(storeState(searchText, currentPage)),
+        storeState: (searchText, currentPage, scrollPosition) => dispatch(storeState(searchText, currentPage, scrollPosition)),
         fetchUsers: (query, page = 1) => dispatch(fetchUsers(query, page)),
-        storeScroll: (scrollPosition) => dispatch(storeScroll(scrollPosition)),
         onTextChange: _.debounce(dispatch, 500)
     }
 }

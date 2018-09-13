@@ -52,9 +52,7 @@ const initialStoreState = {
 const store = (state = initialStoreState, action) => {
     switch (action.type) {
         case STORE_STATE:
-            return { ...state, currentPage: action.currentPage, searchText: action.searchText }
-        case STORE_SCROLL:
-            return { ...state, scrollPosition: action.scrollPosition }
+            return { ...state, currentPage: action.currentPage, searchText: action.searchText, scrollPosition: action.scrollPosition }
         default:
             return state
     }

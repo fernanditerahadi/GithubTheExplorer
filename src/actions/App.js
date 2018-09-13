@@ -3,7 +3,6 @@ export const REQUEST_USERS = 'REQUEST_USERS'
 export const RECEIVE_USERS = 'RECEIVE_USERS'
 export const CLEAR_USERS = 'CLEAR_USERS'
 export const STORE_STATE = 'STORE_STATE'
-export const STORE_SCROLL = 'STORE_SCROLL'
 
 const API_URL = 'https://api.github.com/search/users?q='
 const QUERY_PAGE = '&page='
@@ -45,17 +44,11 @@ export function clearUsers() {
     }
 }
 
-export function storeState(searchText, currentPage) {
+export function storeState(searchText, currentPage, scrollPosition) {
     return {
         type: STORE_STATE,
         searchText,
-        currentPage
-    }
-}
-
-export function storeScroll(scrollPosition) {
-    return {
-        type: STORE_SCROLL,
+        currentPage,
         scrollPosition
     }
 }
