@@ -8,6 +8,14 @@
     padding: 2% 0% 0% 0% !important;
     height: 92vh !important;
     max-width: 94% !important;
+    position: relative !important;
 
+}
+
+.Profile-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 

@@ -4,13 +4,12 @@ import {
     REQUEST_USERS,
     RECEIVE_USERS,
     CLEAR_USERS,
-    STORE_STATE,
-    STORE_SCROLL
+    STORE_STATE
 } from '../actions/App'
 
 
 const initialQueryState = {
-    query: ''
+    query: null
 }
 
 const query = (state = initialQueryState, action) => {
@@ -18,7 +17,7 @@ const query = (state = initialQueryState, action) => {
         case QUERY_USERS:
             return { query: action.query }
         case CLEAR_USERS:
-            return { query: '' }
+            return { query: null }
         default:
             return state
     }
@@ -45,7 +44,7 @@ const users = (state = initialUsersState, action) => {
 
 const initialStoreState = {
     currentPage: 1,
-    searchText: '',
+    searchText: null,
     scrollPosition: 0
 }
 

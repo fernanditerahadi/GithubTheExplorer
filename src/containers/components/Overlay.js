@@ -1,18 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 import ic_empty_state from './../../assets/ic_empty_state.png'
 import ic_not_found from './../../assets/ic_not_found.png'
 import ic_blank from './../../assets/ic_blank.png'
+import ic_limit from './../../assets/ic_limit.png'
 
 import './Overlay.css'
 
+import Loading from './Loading'
+
 const NO_RESULTS_FOUND = 'No Results Found...'
 const BEGIN_SEARCH = 'Begin Search...'
+const EXCEED_LIMIT = 'Network call limit has been exceeded, \n please try again later...'
 
 class Overlay extends Component {
     getOverlayBackground = () => {
         const { query, array } = this.props
-        if (query) {
+        if (query && array) {
             return array.length >= 1 ? {
                 icon: ic_blank,
                 text: null
@@ -21,10 +25,18 @@ class Overlay extends Component {
                     text: NO_RESULTS_FOUND
                 }
         } else {
-            return {
-                icon: ic_empty_state,
-                text: BEGIN_SEARCH
+            if (query) {
+                return {
+                    icon: ic_limit,
+                    text: EXCEED_LIMIT
+                }
+            } else {
+                return {
+                    icon: ic_empty_state,
+                    text: BEGIN_SEARCH
+                }
             }
+
         }
     }
 
@@ -33,11 +45,7 @@ class Overlay extends Component {
         return (
             <div>
                 {this.props.isFetching ?
-                    <div className="spinner">
-                        <div className="bounce1"></div>
-                        <div className="bounce2"></div>
-                        <div className="bounce3"></div>
-                    </div>
+                    <Loading />
                     :
                     <div className="empty-state">
                         <img className="empty-state-image"

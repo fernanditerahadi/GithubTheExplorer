@@ -8,12 +8,29 @@ import logo from './../assets/logo.svg'
 
 import { Pagination } from 'antd';
 
-import User from './components/User'
+import Item from './components/Item'
 import Search from './components/Search'
 import Overlay from './components/Overlay'
-import { queryUsers, fetchUsers, clearUsers, storeState, storeScroll } from '../actions/App'
+import { queryUsers, fetchUsers, clearUsers, storeState } from '../actions/App'
+
+const perPage = 30
 
 class App extends Component {
+
+    scrollTo = (posX, posY) => {
+        document.getElementById('Users-container').scrollTo(posX, posY)
+    }
+
+    resetScrollPosition = () => {
+        const scrollPosition = { x: 0, y: 0 }
+        this.scrollTo(scrollPosition.x, scrollPosition.y)
+        return scrollPosition.y
+    }
+
+    restoreScrollPosition = () => {
+        this.scrollTo(0, this.props.scrollPosition)
+        return this.props.scrollPosition
+    }
 
     onClear = () => {
         this.props.clearUsers()
@@ -21,18 +38,20 @@ class App extends Component {
     }
 
     onHandleChange = (e) => {
+        const scrollPosition = this.resetScrollPosition()
         this.props.onTextChange(queryUsers((e.target.value)))
-        this.props.storeState(e.target.value, 1, document.getElementById('Users-container').scrollTo(0, 0))
+        this.props.storeState(e.target.value, 1, scrollPosition)
     }
 
     onPageChange = (page) => {
+        const scrollPosition = this.resetScrollPosition()
         this.props.fetchUsers(this.props.query, page)
-        this.props.storeState(this.props.searchText, page, document.getElementById('Users-container').scrollTo(0, 0))
+        this.props.storeState(this.props.searchText, page, scrollPosition)
     }
 
     componentDidMount() {
-        this.props.storeState(this.props.searchText, this.props.currentPage,
-            document.getElementById('Users-container').scrollTo(0, this.props.scrollPosition))
+        const scrollPosition = this.restoreScrollPosition()
+        this.props.storeState(this.props.searchText, this.props.currentPage, scrollPosition)
     }
 
     componentDidUpdate(prevProps) {
@@ -47,22 +66,21 @@ class App extends Component {
     }
 
     componentWillUnmount() {
-        this.props.storeState(this.props.searchText, this.props.currentPage,
-            document.getElementById('Users-container').scrollTop)
+        const scrollPosition = document.getElementById('Users-container').scrollTop
+        this.props.storeState(this.props.searchText, this.props.currentPage, scrollPosition)
     }
 
 
     render() {
-        const perPage = 30
         const pages = this.props.totalCount > 1000 ? 1000 : this.props.totalCount
 
-        let users = this.props.users.map((user, index) => {
+        let users = (this.props.users ? this.props.users.map((user, index) => {
             let startCount = 0;
             if (startCount < perPage) {
                 startCount++
-                return (< User key={index} to={`/${user.login}`} {...user} />)
+                return (< Item key={index} to={`/${user.login}`} body={user.html_url} heading={user.login} image={user.avatar_url} />)
             }
-        });
+        }) : []);
 
         return (
             <div className="App">
@@ -89,6 +107,7 @@ class App extends Component {
                     <Pagination
                         total={pages ? pages : 1}
                         pageSize={perPage}
+                        defaultCurrent={1}
                         current={this.props.currentPage}
                         onChange={(page) => this.onPageChange(page)}
                         showTotal={(total, range) => pages ? `${range[0]}-${range[1]} of ${total} items` : `0 items`}

@@ -10,45 +10,128 @@ import { Row, Col, Grid } from 'react-bootstrap'
 import Navigation from './components/Navigation'
 import List from './components/List'
 import Card from './components/Card'
-import { fetchProfile } from '../actions/Profile'
+import Item from './components/Item'
+import Loading from './components/Loading'
+import {
+    REQUEST_PROFILE,
+    RECEIVE_PROFILE,
+    REQUEST_REPOS,
+    RECEIVE_REPOS,
+    REQUEST_FOLLOWERS,
+    RECEIVE_FOLLOWERS,
+    REQUEST_FOLLOWINGS,
+    RECEIVE_FOLLOWINGS,
+    fetchData
+} from '../actions/Profile'
+
+
+const perPage = 30
 
 class Profile extends Component {
 
+    onReposPageChange = (page) => {
+        this.props.fetchData(REQUEST_REPOS, RECEIVE_REPOS, this.props.query, page)
+    }
+
+    onFollowersPageChange = (page) => {
+        this.props.fetchData(REQUEST_FOLLOWERS, RECEIVE_FOLLOWERS, this.props.query, page)
+    }
+
+    onFollowingsPageChange = (page) => {
+        this.props.fetchData(REQUEST_FOLLOWINGS, RECEIVE_FOLLOWINGS, this.props.query, page)
+    }
+
     componentDidMount() {
         const query = this.props.location.pathname.replace(/\//g, "")
-        const { dispatch } = this.props
-        dispatch(fetchProfile(query))
+        this.props.fetchData(REQUEST_PROFILE, RECEIVE_PROFILE, query)
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.query && this.props.query !== prevProps.query) {
+            this.props.fetchData(REQUEST_REPOS, RECEIVE_REPOS, this.props.query)
+            this.props.fetchData(REQUEST_FOLLOWERS, RECEIVE_FOLLOWERS, this.props.query)
+            this.props.fetchData(REQUEST_FOLLOWINGS, RECEIVE_FOLLOWINGS, this.props.query)
+        }
     }
 
     render() {
 
-        let repos = _.range(10).map((user, index) => {
-            return (<p>repo</p>)
-        });
+        let repos = (this.props.reposEntity.repos ? this.props.reposEntity.repos.map((repo, index) => {
+            let startCount = 0;
+            if (startCount < perPage) {
+                startCount++
+                return (< Item
+                    key={index}
+                    isExternal
+                    to={repo.html_url}
+                    heading={repo.name}
+                    body={repo.language}
+                    image={null} />)
+            }
+        }) : []);
 
-        let followers = _.range(10).map((user, index) => {
-            return (<p>follower</p>)
-        });
+        let followers = (this.props.followersEntity.followers ? this.props.followersEntity.followers.map((follower, index) => {
+            let startCount = 0;
+            if (startCount < perPage) {
+                startCount++
+                return (< Item
+                    key={index}
+                    isExternal
+                    to={follower.html_url}
+                    heading={follower.login}
+                    body={follower.html_url}
+                    image={follower.avatar_url} />)
+            }
+        }) : []);
 
-        let following = _.range(10).map((user, index) => {
-            return (<p>following</p>)
-        });
+        let followings = (this.props.followingsEntity.followings ? this.props.followingsEntity.followings.map((following, index) => {
+            let startCount = 0;
+            if (startCount < perPage) {
+                startCount++
+                return (< Item
+                    key={index}
+                    isExternal
+                    to={following.html_url}
+                    heading={following.login}
+                    body={following.html_url}
+                    image={following.avatar_url}
+                />)
+            }
+        }) : []);
+
         return (
             <div className="Profile">
                 <Navigation />
                 <Grid className="Profile-container">
                     <Row>
-                        <Col sm={12} md={3}>
-                            <Card {...this.props.profile} />
+                        <Col sm={12} md={3} className="Profile-col">
+                            <Card {...this.props.profileEntity.profile} isFetching={this.props.profileEntity.isFetching} />
                         </Col>
-                        <Col sm={12} md={3}>
-                            <List title="Repos" count={this.props.profile.public_repos} item={repos} />
+                        <Col sm={12} md={3} className="Profile-col">
+                            <List title="Repos"
+                                item={repos}
+                                isFetching={this.props.reposEntity.isFetching}
+                                count={this.props.profileEntity.profile.public_repos}
+                                currentPage={this.props.reposEntity.page}
+                                onChange={(page) => this.onReposPageChange(page)} />
+
                         </Col>
-                        <Col sm={12} md={3}>
-                            <List title="Followers" count={this.props.profile.followers} item={followers} />
+                        <Col sm={12} md={3} className="Profile-col">
+                            <List title="Followers"
+                                item={followers}
+                                isFetching={this.props.followersEntity.isFetching}
+                                count={this.props.profileEntity.profile.followers}
+                                currentPage={this.props.followersEntity.page}
+                                onChange={(page) => this.onFollowersPageChange(page)} />
                         </Col>
-                        <Col sm={12} md={3}>
-                            <List title="Following" count={this.props.profile.following} item={following} />
+                        <Col sm={12} md={3} className="Profile-col">
+                            <List
+                                title="Following"
+                                isFetching={this.props.followingsEntity.isFetching}
+                                item={followings}
+                                count={this.props.profileEntity.profile.following}
+                                currentPage={this.props.followingsEntity.page}
+                                onChange={(page) => this.onFollowingsPageChange(page)} />
                         </Col>
                     </Row>
                 </Grid>
@@ -60,9 +143,18 @@ class Profile extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isFetching: state.profileReducer.isFetching,
-        profile: state.profileReducer.profile
+        profileEntity: state.profileReducer.profile,
+        reposEntity: state.profileReducer.repos,
+        followersEntity: state.profileReducer.followers,
+        followingsEntity: state.profileReducer.followings,
+        query: state.profileReducer.profile.query,
     }
 }
 
-export default connect(mapStateToProps)(Profile)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchData: (actionOne, actionTwo, query, page = 1) => dispatch(fetchData(actionOne, actionTwo, query, page))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

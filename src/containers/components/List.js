@@ -4,6 +4,10 @@ import { Pagination, Badge } from 'antd';
 
 import './List.css'
 
+import Loading from './Loading'
+
+
+
 class List extends Component {
     render() {
 
@@ -14,10 +18,21 @@ class List extends Component {
                         overflowCount={1000000}
                         style={{ backgroundColor: '#fff', color: '#999', boxShadow: '0 0 0 1px #d9d9d9 inset' }} /></h4>
                 <hr></hr>
-                <div className="List-item-container">{this.props.item}</div>
+
+                <div className="List-item-container">
+                    {this.props.isFetching ? <Loading /> : this.props.item}
+                </div>
                 <hr></hr>
                 <div className="List-pagination">
-                    <Pagination defaultCurrent={1} total={this.props.count} pageSize={30} hideOnSinglePage size="small" />
+                    <Pagination
+                        total={this.props.count}
+                        pageSize={30}
+                        defaultCurrent={1}
+                        current={this.props.currentPage}
+                        onChange={(page) => this.props.onChange(page)}
+                        hideOnSinglePage
+                        size="small"
+                    />
                 </div>
 
 

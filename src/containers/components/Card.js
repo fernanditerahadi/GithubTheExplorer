@@ -4,15 +4,19 @@ import { Icon } from 'antd'
 
 import './Card.css'
 
+import Loading from './Loading'
+
 class Navigation extends Component {
     render() {
 
         return (
             <div className="Card">
+
                 <img src={this.props.avatar_url} className="Card-image" />
                 <h2 className="Card-name">{this.props.name}</h2>
                 <p className="Card-id">{this.props.login}</p>
                 <p className="Card-bio">{this.props.bio}</p>
+                {this.props.isFetching ? <Loading /> : null}
                 <hr></hr>
                 <div className="Card-detail-container">
                     {this.props.company &&

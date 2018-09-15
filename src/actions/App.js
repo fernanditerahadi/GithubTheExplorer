@@ -1,3 +1,5 @@
+import fetch from 'cross-fetch'
+
 export const QUERY_USERS = 'QUERY_USERS'
 export const REQUEST_USERS = 'REQUEST_USERS'
 export const RECEIVE_USERS = 'RECEIVE_USERS'
@@ -29,18 +31,18 @@ function receiveUsers(json) {
     }
 }
 
+export function clearUsers() {
+    return {
+        type: CLEAR_USERS
+    }
+}
+
 export function fetchUsers(input, page = 1) {
     return (dispatch) => {
         dispatch(requestUsers(input))
         return fetch(API_URL + input + QUERY_PAGE + page)
             .then((response) => { return response.json() })
             .then((json) => dispatch(receiveUsers(json)))
-    }
-}
-
-export function clearUsers() {
-    return {
-        type: CLEAR_USERS
     }
 }
 
